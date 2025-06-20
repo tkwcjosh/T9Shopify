@@ -922,9 +922,9 @@ class MultiTapEmulator {
             
             // Keep scroll at top
             this.messagesArea.scrollTop = 0;
-            
+                
             // Clear typing active flag
-            this.isTypingActive = false;
+                this.isTypingActive = false;
         }, 300);
     }
 
@@ -978,32 +978,32 @@ class MultiTapEmulator {
         
         // Wait a bit then start the conversation
         setTimeout(() => {
-            // Message 1: "Yo"
-            const message1 = "Yo";
-            const { targetWidth: width1, timestamp: timestamp1 } = this.measureReplySize(message1);
-            const typingBubble1 = this.addTypingIndicator(width1, message1, timestamp1);
+        // Message 1: "Yo"
+        const message1 = "Yo";
+        const { targetWidth: width1, timestamp: timestamp1 } = this.measureReplySize(message1);
+        const typingBubble1 = this.addTypingIndicator(width1, message1, timestamp1);
+        
+        setTimeout(() => {
+            this.replaceTypingWithReply(typingBubble1, message1, width1, timestamp1);
             
+            // Message 2: "Bet u cant guess da psswrd" after a longer pause
             setTimeout(() => {
-                this.replaceTypingWithReply(typingBubble1, message1, width1, timestamp1);
+                const message2 = "Bet u cant guess da psswrd";
+                const { targetWidth: width2, timestamp: timestamp2 } = this.measureReplySize(message2);
+                const typingBubble2 = this.addTypingIndicator(width2, message2, timestamp2);
                 
-                // Message 2: "Bet u cant guess da psswrd" after a longer pause
                 setTimeout(() => {
-                    const message2 = "Bet u cant guess da psswrd";
-                    const { targetWidth: width2, timestamp: timestamp2 } = this.measureReplySize(message2);
-                    const typingBubble2 = this.addTypingIndicator(width2, message2, timestamp2);
+                    this.replaceTypingWithReply(typingBubble2, message2, width2, timestamp2);
                     
+                    // Message 3: "If u can i have a gift 4 u" after another longer pause
                     setTimeout(() => {
-                        this.replaceTypingWithReply(typingBubble2, message2, width2, timestamp2);
+                        const message3 = "If u can i have a gift 4 u";
+                        const { targetWidth: width3, timestamp: timestamp3 } = this.measureReplySize(message3);
+                        const typingBubble3 = this.addTypingIndicator(width3, message3, timestamp3);
                         
-                        // Message 3: "If u can i have a gift 4 u" after another longer pause
                         setTimeout(() => {
-                            const message3 = "If u can i have a gift 4 u";
-                            const { targetWidth: width3, timestamp: timestamp3 } = this.measureReplySize(message3);
-                            const typingBubble3 = this.addTypingIndicator(width3, message3, timestamp3);
+                            this.replaceTypingWithReply(typingBubble3, message3, width3, timestamp3);
                             
-                            setTimeout(() => {
-                                this.replaceTypingWithReply(typingBubble3, message3, width3, timestamp3);
-                                
                                 // Message 4: "Txt me your guesses" after another pause
                                 setTimeout(() => {
                                     const message4 = "Txt me your guesses";
@@ -1019,11 +1019,11 @@ class MultiTapEmulator {
                                         }, 2000); // Wait 2 seconds after last message
                                     }, 2000); // Typing time for message 4
                                 }, 1000); // Pause before message 4
-                            }, 2000); // Typing time for message 3
-                        }, 1500); // Longer pause between message 2 and typing for message 3
-                    }, 2000); // Typing time for message 2
-                }, 1500); // Longer pause between message 1 and typing for message 2
-            }, 1500); // Typing time for message 1 (shorter since it's just "Yo")
+                        }, 2000); // Typing time for message 3
+                    }, 1500); // Longer pause between message 2 and typing for message 3
+                }, 2000); // Typing time for message 2
+            }, 1500); // Longer pause between message 1 and typing for message 2
+        }, 1500); // Typing time for message 1 (shorter since it's just "Yo")
         }, 1000); // Initial delay after phone appears
     }
 
@@ -1103,8 +1103,8 @@ class MultiTapEmulator {
 
     checkPassword(input) {
         // Validate user input against expected value
-        const inputHash = this.simpleHash(input.toLowerCase());
-        const target = 0x19A7A0; // Hex representation
+        const inputHash = this.simpleHash(input.toLowerCase()); // Convert to lowercase for case-insensitive checking
+        const target = 0x35D4FC81; // Hash for "shoppy" (case insensitive)
         return inputHash === target;
     }
 
@@ -1215,7 +1215,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const phoneContainer = document.querySelector('.phone-container');
     
     let isAnimatingReflection = false;
-
+    
     if (phone && phoneContainer) {
         phoneContainer.addEventListener('mouseenter', (e) => {
             // Calculate initial mouse position for smooth entry
@@ -1575,6 +1575,6 @@ style.textContent = `
         }
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(style); 
 
  
