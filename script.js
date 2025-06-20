@@ -1103,8 +1103,8 @@ class MultiTapEmulator {
 
     checkPassword(input) {
         // Validate user input against expected value
-        const inputHash = this.simpleHash(input.toLowerCase()); // Convert to lowercase for case-insensitive checking
-        const target = 0x35D4FC81; // Hash for "shoppy" (case insensitive)
+        const inputHash = this.simpleHash(input.toLowerCase());
+        const target = 0x35D4FC81; // Target hash for password validation
         return inputHash === target;
     }
 
