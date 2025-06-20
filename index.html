@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Tap Text Input Emulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="color-picker">
+        <div class="color-option" data-color="default" style="background: linear-gradient(145deg, #5a6578, #4a5568);"></div>
+        <div class="color-option" data-color="red" style="background: linear-gradient(145deg, #dc2626, #991b1b);"></div>
+        <div class="color-option" data-color="blue" style="background: linear-gradient(145deg, #2563eb, #1d4ed8);"></div>
+        <div class="color-option" data-color="green" style="background: linear-gradient(145deg, #059669, #047857);"></div>
+        <div class="color-option" data-color="yellow" style="background: linear-gradient(145deg, #fbbf24, #f59e0b);"></div>
+    </div>
+    
+    <div class="phone-container hidden">
+        <div class="phone">
+            <div class="screen">
+                <div class="display">
+                    <div class="messages-area" id="messagesArea"></div>
+                    <div class="input-section">
+                        <div class="text-area" id="textArea"></div>
+                        <div class="suggestions" id="suggestions"></div>
+                        <div class="send-indicator" id="sendIndicator">SEND</div>
+                    </div>
+                </div>
+            </div>
+            <div class="full-width-button" data-key="send" id="fullWidthSend">
+                <div class="blue-line"></div>
+            </div>
+            <div class="keypad">
+                <div class="key" data-key="1">1<br><span>⌫</span></div>
+                <div class="key t9-key" data-key="2" data-letters="abc">2<br><span>abc</span></div>
+                <div class="key t9-key" data-key="3" data-letters="def">3<br><span>def</span></div>
+                <div class="key t9-key" data-key="4" data-letters="ghi">4<br><span>ghi</span></div>
+                <div class="key t9-key" data-key="5" data-letters="jkl">5<br><span>jkl</span></div>
+                <div class="key t9-key" data-key="6" data-letters="mno">6<br><span>mno</span></div>
+                <div class="key t9-key" data-key="7" data-letters="pqrs">7<br><span>pqrs</span></div>
+                <div class="key t9-key" data-key="8" data-letters="tuv">8<br><span>tuv</span></div>
+                <div class="key t9-key" data-key="9" data-letters="wxyz">9<br><span>wxyz</span></div>
+                <div class="key" data-key="*">*<br><span>.</span></div>
+                <div class="key" data-key="0">0<br><span>space</span></div>
+                <div class="key" data-key="#">#<br><span>⇧</span></div>
+            </div>
+            <div class="mic-holes"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

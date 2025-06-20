@@ -1,0 +1,815 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: #4a8a8b;
+    animation: backgroundFloat 20s ease-in-out infinite alternate;
+    font-family: 'MS Sans Serif', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: background 0.8s ease;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: var(--ambient-glow, radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(124, 179, 66, 0.1) 0%, transparent 50%));
+    animation: ambientGlow 8s ease-in-out infinite alternate;
+    z-index: -1;
+    transition: background 0.8s ease;
+}
+
+@keyframes ambientGlow {
+    0% { transform: rotate(0deg) scale(1); }
+    100% { transform: rotate(5deg) scale(1.1); }
+}
+
+@keyframes backgroundFloat {
+    0% { 
+        background-position: 0% 0%, 100% 100%, 0% 0%;
+        transform: translateX(0) translateY(0);
+    }
+    25% { 
+        background-position: 10% 5%, 90% 95%, 5% 10%;
+        transform: translateX(2px) translateY(-1px);
+    }
+    50% { 
+        background-position: 5% 10%, 95% 90%, 10% 5%;
+        transform: translateX(-1px) translateY(2px);
+    }
+    75% { 
+        background-position: 15% 8%, 85% 92%, 8% 15%;
+        transform: translateX(1px) translateY(1px);
+    }
+    100% { 
+        background-position: 8% 15%, 92% 85%, 15% 8%;
+        transform: translateX(-2px) translateY(-1px);
+    }
+}
+
+.phone-container {
+    perspective: 2000px;
+    transform-style: preserve-3d;
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.4));
+}
+
+.phone-container.hidden {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+    pointer-events: none;
+}
+
+.phone-container {
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.phone-container.show {
+    opacity: 1;
+    transform: translateY(0) scale(1.2);
+    pointer-events: auto;
+}
+
+.phone {
+    width: 280px;
+    height: 600px;
+    background: 
+        /* Main gradients */
+        linear-gradient(145deg, #5a6578, #4a5568, #2d3748, #1a202c),
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+    border-radius: 40px;
+    padding: 25px 20px 16px 20px;
+    
+    /* CSS custom properties for dynamic lighting */
+    --top-light: 0.2;
+    --bottom-shadow: 0.4;
+    --left-light: 0.15;
+    --right-shadow: 0.3;
+    
+    box-shadow: 
+        /* Teal-complementary shadow */
+        0 40px 80px rgba(0, 0, 0, 0.25),
+        0 20px 40px rgba(74, 138, 139, 0.3),
+        0 10px 20px rgba(0, 0, 0, 0.2),
+        /* Dynamic edge lighting that responds to rotation */
+        inset 0 8px 1px rgba(255, 255, 255, var(--top-light)),
+        inset 0 -8px 1px rgba(0, 0, 0, var(--bottom-shadow)),
+        inset 15px 0 2px rgba(255, 255, 255, var(--left-light)),
+        inset -15px 0 2px rgba(0, 0, 0, var(--right-shadow)),
+        /* Dynamic corner highlights */
+        inset 10px 10px 2px rgba(255, 255, 255, calc(var(--top-light) * 0.5)),
+        inset -10px 10px 2px rgba(255, 255, 255, calc(var(--left-light) * 0.3)),
+        inset 10px -10px 2px rgba(0, 0, 0, calc(var(--bottom-shadow) * 0.4)),
+        inset -10px -10px 2px rgba(0, 0, 0, calc(var(--right-shadow) * 0.7)),
+        /* Subtle overall glow */
+        inset 0 0 60px rgba(255, 255, 255, 0.05),
+        /* Light-catching border replacement */
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.2),
+        inset 0 0 0 3px #1a202c,
+        /* Dynamic directional border lighting */
+        inset 3px 3px 6px rgba(255, 255, 255, calc(var(--top-light) * 3)),
+        inset -2px -2px 4px rgba(0, 0, 0, calc(var(--bottom-shadow) * 2));
+    position: relative;
+    transform: rotateX(8deg) rotateY(-3deg);
+    transition: 
+        transform 0.3s ease,
+        box-shadow 0.2s ease;
+    filter: contrast(1.02) brightness(0.98);
+}
+
+.phone::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: -10px;
+    width: 8px;
+    height: 60%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
+    border-radius: 4px;
+    transform: rotateY(-90deg) translateZ(3px);
+    opacity: 0.7;
+}
+
+.phone::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 .5 0 .7 0 .8 0 .9 0 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+    border-radius: 40px;
+    pointer-events: none;
+    opacity: 0.25;
+    mix-blend-mode: soft-light;
+    z-index: -1;
+}
+
+/* Microphone holes at bottom of phone */
+
+/* Microphone holes with 3D inset effect */
+.mic-holes {
+    position: absolute;
+    bottom: 23px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: 
+        radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.9)),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6)),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 30%, transparent 60%);
+    border-radius: 50%;
+    box-shadow: 
+        /* Side holes */
+        -8px 0 0 rgba(0, 0, 0, 0.8),
+        8px 0 0 rgba(0, 0, 0, 0.8),
+        /* Light catching the outer rim with gradient */
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        -8px 0 0 1px rgba(255, 255, 255, 0.05),
+        8px 0 0 1px rgba(255, 255, 255, 0.05),
+        /* Subtle outer glow for depth */
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        -8px 1px 2px rgba(0, 0, 0, 0.3),
+        8px 1px 2px rgba(0, 0, 0, 0.3),
+        /* Deep inset shadow from top */
+        inset 0 2px 3px rgba(0, 0, 0, 0.9),
+        inset 2px 0 2px rgba(0, 0, 0, 0.7),
+        inset -2px 0 2px rgba(0, 0, 0, 0.7),
+        /* Bottom light reflection only */
+        inset 0 -1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Removed static hover - now handled by JavaScript mouse tracking */
+
+.screen {
+    width: 100%;
+    height: 180px;
+    background: 
+        /* Dot matrix pattern */
+        radial-gradient(circle at center, rgba(0, 0, 0, 0.05) 0.5px, transparent 0.5px),
+        linear-gradient(145deg, #8bc34a, #7cb342, #689f38, #558b2f),
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.2) 0%, transparent 40%);
+    background-size: 3px 3px, 100% 100%, 100% 100%;
+    border-radius: 12px;
+
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        inset 0 8px 16px rgba(0, 0, 0, 0.5),
+        inset 0 -4px 8px rgba(255, 255, 255, 0.1),
+        inset 4px 0 8px rgba(0, 0, 0, 0.3),
+        inset -4px 0 8px rgba(255, 255, 255, 0.05),
+        0 4px 16px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(76, 175, 80, 0.5),
+        /* Light-catching border replacement */
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.2),
+        inset 0 0 0 3px #1a202c,
+        /* Directional border lighting */
+        inset 3px 3px 6px rgba(255, 255, 255, 0.6),
+        inset -2px -2px 4px rgba(0, 0, 0, 0.8);
+    transform: translateZ(-5px);
+}
+
+.screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        /* Softened green reverse vignette shaped to screen */
+        radial-gradient(ellipse 95% 85% at center, rgba(139, 195, 74, 0.35) 0%, rgba(139, 195, 74, 0.25) 25%, rgba(139, 195, 74, 0.15) 50%, rgba(139, 195, 74, 0.08) 75%, transparent 100%),
+        /* Gentle inner core glow */
+        radial-gradient(ellipse 70% 60% at center, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 40%, rgba(255, 255, 255, 0.02) 70%, transparent 100%),
+        /* Original gradient */
+        linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 30%, transparent 70%, rgba(0, 0, 0, 0.1) 100%);
+    pointer-events: none;
+    border-radius: 12px;
+    z-index: -1;
+}
+
+.screen {
+    /* CSS custom properties for reflection group offset */
+    --reflection-offset-x: 0%;
+    --reflection-offset-y: 0%;
+}
+
+.screen::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        /* Main reflection streak */
+        radial-gradient(ellipse 40% 60% at calc(80% + var(--reflection-offset-x)) calc(15% + var(--reflection-offset-y)), rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 30%, transparent 60%),
+        /* Secondary highlight */
+        radial-gradient(ellipse 25% 35% at calc(75% + var(--reflection-offset-x)) calc(20% + var(--reflection-offset-y)), rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%),
+        /* Corner gleam */
+        radial-gradient(ellipse 15% 20% at calc(85% + var(--reflection-offset-x)) calc(10% + var(--reflection-offset-y)), rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.3) 25%, transparent 50%),
+        /* Subtle overall sheen */
+        linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 0%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.05) 100%),
+        /* Edge highlights */
+        linear-gradient(270deg, rgba(255, 255, 255, 0.2) 0%, transparent 3%),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.15) 0%, transparent 3%);
+    border-radius: 12px;
+    pointer-events: none;
+    opacity: 0.7;
+    mix-blend-mode: overlay;
+    transition: all 0.3s ease;
+}
+
+/* Screen blend mode glow effect */
+.screen {
+    position: relative;
+}
+
+.screen::before {
+    z-index: 10;
+}
+
+.screen::after {
+    z-index: 11;
+    mix-blend-mode: screen;
+}
+
+.display {
+    padding: 8px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+.messages-area {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 2px;
+    position: relative;
+    z-index: 2;
+    mask: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 5%,
+        black 95%,
+        transparent 100%
+    );
+    -webkit-mask: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 5%,
+        black 95%,
+        transparent 100%
+    );
+}
+
+.messages-area::-webkit-scrollbar {
+    width: 3px;
+}
+
+.messages-area::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.messages-area::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+}
+
+.input-section {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 1px 4px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 2;
+}
+
+.text-area {
+    background: transparent;
+    border-radius: 0;
+    padding: 6px 4px;
+    font-size: 12px;
+    line-height: 1.0;
+    color: #1a202c;
+    word-wrap: break-word;
+    margin: 0;
+    border: none;
+    height: 24px;
+    max-height: 24px;
+    min-height: 24px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-sizing: border-box;
+}
+
+/* Retro bubble messages for phone screen */
+.phone-message-item, .phone-reply-item {
+    margin-bottom: 6px;
+    padding: 3px 4px;
+    border-radius: 4px;
+    font-size: 9px;
+    line-height: 1.0;
+    max-width: 85%;
+    word-wrap: break-word;
+    animation: phoneMessageAppear 0.3s ease forwards;
+    opacity: 0;
+    transform: translateY(5px);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.phone-message-item {
+    background: rgba(255, 255, 255, 0.2);
+    color: #1a202c;
+    align-self: flex-end;
+    text-align: right;
+    margin-left: auto;
+}
+
+.phone-reply-item {
+    background: rgba(0, 0, 0, 0.15);
+    color: #1a202c;
+    align-self: flex-start;
+    text-align: left;
+    margin-right: auto;
+}
+
+.phone-typing-bubble {
+    background: rgba(0, 0, 0, 0.15);
+    color: #1a202c;
+    align-self: flex-start;
+    text-align: left;
+    margin-right: auto;
+    margin-bottom: 6px;
+    padding: 3px 4px;
+    border-radius: 4px;
+    font-size: 9px;
+    line-height: 1.0;
+    max-width: 85%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    min-width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+.phone-typing-dots {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.phone-typing-dot {
+    width: 2px;
+    height: 2px;
+    background: #1a202c;
+    border-radius: 1px;
+    animation: phoneTypingBounce 1.4s infinite ease-in-out;
+}
+
+.phone-typing-dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.phone-typing-dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+.phone-typing-dot:nth-child(3) {
+    animation-delay: 0s;
+}
+
+@keyframes phoneTypingBounce {
+    0%, 80%, 100% { 
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% { 
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+@keyframes phoneMessageAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.phone-message-timestamp, .phone-reply-timestamp {
+    font-size: 7px;
+    opacity: 0.6;
+    margin-top: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+.suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin: 0;
+    min-height: 0px;
+    height: 0px;
+}
+
+.send-indicator {
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #1a202c;
+    padding: 0px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    height: 0px;
+    margin: 0;
+}
+
+.suggestion {
+    background: rgba(255, 255, 255, 0.8);
+    color: #1a202c;
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-size: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.suggestion:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.05);
+}
+
+.suggestion.active {
+    background: rgba(59, 130, 246, 0.8);
+    color: white;
+}
+
+.full-width-button {
+    width: 50%;
+    height: 35px;
+    margin: 0 auto;
+    background: 
+        linear-gradient(145deg, #ffffff, #f7fafc, #e2e8f0, #cbd5e0),
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+    border: 2px solid #a0aec0;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    color: #2d3748;
+    transition: all 0.15s ease;
+    user-select: none;
+    margin-bottom: 15px;
+    
+    /* CSS custom properties for dynamic lighting */
+    --send-top-light: 1;
+    --send-bottom-shadow: 0.15;
+    --send-left-light: 0.5;
+    --send-right-shadow: 0.1;
+    
+    box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        /* Dynamic edge lighting */
+        inset 0 3px 0 rgba(255, 255, 255, var(--send-top-light)),
+        inset 0 -3px 0 rgba(0, 0, 0, var(--send-bottom-shadow)),
+        inset 3px 0 0 rgba(255, 255, 255, var(--send-left-light)),
+        inset -3px 0 0 rgba(0, 0, 0, var(--send-right-shadow)),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    transform: translateZ(6px);
+}
+
+.full-width-button:hover {
+    background: linear-gradient(145deg, #edf2f7, #e2e8f0, #cbd5e0);
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.25),
+        0 2px 4px rgba(0, 0, 0, 0.15),
+        inset 0 2px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.1),
+        inset 2px 0 0 rgba(255, 255, 255, 0.3),
+        inset -2px 0 0 rgba(0, 0, 0, 0.05),
+        0 0 20px rgba(59, 130, 246, 0.6);
+}
+
+.full-width-button:active {
+    transform: translateY(1px) translateZ(2px);
+    box-shadow: 
+        0 2px 6px rgba(0, 0, 0, 0.4),
+        0 1px 2px rgba(0, 0, 0, 0.25),
+        inset 0 4px 8px rgba(0, 0, 0, 0.2),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.blue-line {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 15px 0;
+    justify-content: center;
+}
+
+.key {
+    width: 70px;
+    height: 45px;
+    background: 
+        linear-gradient(145deg, #ffffff, #f7fafc, #e2e8f0, #cbd5e0),
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+    border: 2px solid #a0aec0;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2d3748;
+    transition: all 0.15s ease;
+    user-select: none;
+    position: relative;
+    justify-self: center;
+    
+    /* CSS custom properties for dynamic lighting */
+    --key-top-light: 1;
+    --key-bottom-shadow: 0.15;
+    --key-left-light: 0.5;
+    --key-right-shadow: 0.1;
+    
+    box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        /* Dynamic edge lighting */
+        inset 0 3px 0 rgba(255, 255, 255, var(--key-top-light)),
+        inset 0 -3px 0 rgba(0, 0, 0, var(--key-bottom-shadow)),
+        inset 3px 0 0 rgba(255, 255, 255, var(--key-left-light)),
+        inset -3px 0 0 rgba(0, 0, 0, var(--key-right-shadow)),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    transform: translateZ(8px);
+}
+
+.key::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent);
+    border-radius: 46px 46px 20px 20px;
+    pointer-events: none;
+}
+
+.key:hover {
+    background: linear-gradient(145deg, #edf2f7, #e2e8f0, #cbd5e0);
+    transform: translateY(-3px) translateZ(6px) scale(1.08);
+    box-shadow: 
+        0 12px 24px rgba(0, 0, 0, 0.35),
+        0 4px 8px rgba(0, 0, 0, 0.2),
+        inset 0 2px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.12),
+        inset 2px 0 0 rgba(255, 255, 255, 0.4),
+        inset -2px 0 0 rgba(0, 0, 0, 0.06),
+        0 0 18px rgba(59, 130, 246, 0.5);
+}
+
+.key:active {
+    transform: translateY(1px) translateZ(2px) scale(0.95);
+    box-shadow: 
+        0 2px 6px rgba(0, 0, 0, 0.4),
+        0 1px 2px rgba(0, 0, 0, 0.25),
+        inset 0 4px 8px rgba(0, 0, 0, 0.2),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.key span {
+    font-size: 8px;
+    font-weight: normal;
+    color: #4a5568;
+    margin-top: 1px;
+    line-height: 1;
+}
+
+/* Nokia-style phone - all keys have same white styling */
+
+/* Typing indicator */
+.typing-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 6px;
+    height: 6px;
+    background: #1a202c;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Key press animation - replicate :active state for keyboard input */
+.key-pressed {
+    transform: translateY(1px) translateZ(2px) scale(0.95) !important;
+    box-shadow: 
+        0 2px 6px rgba(0, 0, 0, 0.4),
+        0 1px 2px rgba(0, 0, 0, 0.25),
+        inset 0 4px 8px rgba(0, 0, 0, 0.2),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.1s ease !important;
+}
+
+/* Blinking cursor */
+.cursor {
+    display: inline;
+    border-left: 3px solid #1a202c;
+    animation: blink 1s infinite;
+    margin-left: 1px;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Old send button styles removed - replaced with full-width button */
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .phone {
+        width: 260px;
+        height: 480px;
+        padding: 20px 15px;
+    }
+    
+    .screen {
+        height: 120px;
+    }
+    
+    .key {
+        width: 60px;
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    .key span {
+        font-size: 7px;
+    }
+}
+
+/* Old message log styles removed - now using phone screen messages */
+
+/* Old external message styles removed - now using phone screen styles */
+
+/* Old external typing bubble styles removed - now using phone screen styles */
+
+/* Color Picker Styles */
+.color-picker {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 1000;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.color-option {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.color-option.active {
+    border-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.color-option.active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+ 
